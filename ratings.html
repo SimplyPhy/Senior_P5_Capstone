@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Udacity Rating App</title>
+  <style type="text/css">
+    .inputDiv {
+      display: block;
+    }
+    textarea {
+      resize: none;
+    }
+    input {
+      display: block;
+    }
+    input[type=number] {
+      width: 65px;
+    }
+  </style>
+</head>
+<body>
+  <div id="inputDiv" class="inputDiv">
+    <form id="inputForm" class="inputForm">
+      <select name="courses" class="courses"></select>
+      <input type="text" name="date" placeholder="date" class="date">
+      <input type="number" name="rating" min="1" max="10" width="65" placeholder="Rating" class="rating">
+      <textarea name="like" placeholder="Tell us what you like!" rows="5" cols="50" resize="none" class="like"></textarea>
+      <textarea name="dislike" placeholder="Let us know how we can improve!" rows="5" cols="50" resize="none" class="dislike"></textarea>
+      <textarea name="questions" placeholder="Need help?  Post your question here!" rows="5" cols="50" resize="none" class="questions"></textarea>
+      <input type="button" name="submit" value="submit" class="submit_button">
+    </form>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script defer src="model.js"></script>
+  <script defer src="ratings.js"></script>
+</body>
+</html>
