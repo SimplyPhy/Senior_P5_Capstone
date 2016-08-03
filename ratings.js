@@ -18,14 +18,14 @@
   G.$date.val(todaysDate());
 
 
-
+  // Store .courses selection box
   var $courseSelection = $(".courses");
-  console.log(G.courseList);
-  $.each(G.courses, function(index, value) {
-    $courseSelection.append($('<option>', {
-    text: value
-    }));
-  });
-console.log(G.courses);
+
+  /* Fills the courses selection box with all course names
+   */
+  for (var i = 0; i < G.courses.length; i++) {
+    var courseName = G.courses[i].name;
+    $courseSelection.append(new Option(courseName, courseName));
+  }
 
 })(window);
