@@ -12,14 +12,17 @@
   };
 
   G.courses = [
-    { "Welcome to the Nanodegree": {
-      sections: {
-        "Welcome to the Senior Web Developer Nanodegree": {
+    {
+      name: "Welcome to the Nanodegree",
+      sections: [
+        {
+          name: "Welcome to the Senior Web Developer Nanodegree",
           segments: [
             "Welcome to the Nanodegree"
           ]
         },
-        "Nanodegree Orientation": {
+        {
+          name: "Nanodegree Orientation",
           segments: [
             "Quiz: Projects and Progress",
             "Quiz: Career Development Opportunities",
@@ -33,13 +36,13 @@
             "Wrapping Up"
           ]
         }
-      }
-    }
+      ]
     },
     {
-      "Building High Conversion Web Forms": {
-      sections: {
-        "Efficient Inputs Part 1": {
+      name: "Building High Conversion Web Forms",
+      sections: [
+        {
+          name: "Efficient Inputs Part 1",
           segments: [
             "Course Intro",
             "Quiz: Fix This Form",
@@ -55,7 +58,8 @@
             "Lesson Outro"
           ]
         },
-        "Efficient Inputs Part 2": {
+        {
+          name: "Efficient Inputs Part 2",
           segments: [
             "Lesson 2 Intro",
             "Pop Quiz HS",
@@ -81,7 +85,8 @@
             "Lesson 2 Outro"
           ]
         },
-        "Fast Forms": {
+        {
+          name: "Fast Forms",
           segments: [
             "Lesson 3 Intro",
             "Form Principles",
@@ -100,7 +105,8 @@
             "Lesson 3 Outro"
           ]
         },
-        "Touch Support": {
+        {
+          name: "Touch Support",
           segments: [
             "Lesson 4 Intro",
             "It Can't be That Bad, Right?",
@@ -115,11 +121,13 @@
             "Course Outro"
           ]
         }
-      }
+      ]
     },
-    "Web Tooling & Automation": {
-      sections: {
-        "Introduction": {
+    {
+      name: "Web Tooling & Automation",
+      sections: [
+        {
+          name: "Introduction",
           segments: [
             "Course Intro",
             "Cost Effectiveness",
@@ -127,7 +135,8 @@
             "On to the course!"
           ]
         },
-        "Productive Editing": {
+        {
+          name: "Productive Editing",
           segments: [
             "Intro",
             "From Notepad to IDE",
@@ -140,7 +149,8 @@
             "Lesson Outro"
           ]
         },
-        "Powerful Builds": {
+        {
+        name: "Powerful Builds",
           segments: [
             "Lesson Intro",
             "Overview of Build Tools",
@@ -158,7 +168,8 @@
             "Lesson Outro"
           ]
         },
-        "Expressive Live Editing": {
+        {
+        name: "Expressive Live Editing",
           segments: [
             "Lesson Intro",
             "Advantages of Live Editing",
@@ -167,7 +178,8 @@
             "Lesson Outro"
           ]
         },
-        "How to Prevent Disasters": {
+        {
+        name: "How to Prevent Disasters",
           segments: [
             "Lesson Intro",
             "Why Rely on Tools to Prevent Bad Things",
@@ -182,19 +194,21 @@
             "Lesson Outro"
           ]
         },
-        "Conclusion": {
+        {
+        name: "Conclusion",
           segments: [
             "Lesson Intro",
             "Scaffolding",
             "Lesson Outro"
           ]
         }
-
-      }
+      ]
     },
-    "Using Promises": {
-      sections: {
-        "Creating Promises": {
+    {
+      name: "Using Promises",
+      sections: [
+        {
+          name:"Creating Promises",
           segments: [
             "Course Introduction",
             "Callbacks vs Promises",
@@ -212,7 +226,8 @@
             "What Happens Next"
           ]
         },
-        "Chaining Promises": {
+        {
+          name: "Chaining Promises",
           segments: [
             "Fetch and Show First Planet",
             "Error Handling Strategies",
@@ -227,11 +242,13 @@
             "Bonus Question: Parallel Requests"
           ]
         }
-      }
+      ]
     },
-    "Building Offline-First Web Apps": {
-      sections: {
-        "The Benefits of Offline First": {
+    {
+      name: "Building Offline-First Web Apps",
+      sections: [
+        {
+          name: "The Benefits of Offline First",
           segments: [
             "Intro",
             "The Problem",
@@ -248,7 +265,8 @@
             "Introducing Service Workers"
           ]
         },
-        "Introducing the Service Worker": {
+        {
+          name: "Introducing the Service Worker",
           segments: [
             "An Overview of Service Workers",
             "Scoping Quiz",
@@ -278,7 +296,8 @@
             "Quiz: Caching the Page Skeleton"
           ]
         },
-        "IndexedDB and Caching": {
+        {
+          name: "IndexedDB and Caching",
           segments: [
             "Introducing the IDB Promised Library",
             "Getting Started with IDB",
@@ -296,11 +315,13 @@
             "Outro"
           ]
         }
-      }
+      ]
     },
-    "Web Accessibility": {
-      sections: {
-        "Lesson 1 - Overview": {
+    {
+      name: "Web Accessibility",
+      sections: [
+        {
+          name: "Lesson 1 - Overview",
           segments: [
             "Introduction to Accessibility",
             "What is Accessibility",
@@ -318,7 +339,8 @@
             "Gear Shift into Course Practicalities",
           ]
         },
-        "Lesson 2 - Focus": {
+        {
+          name: "Lesson 2 - Focus",
           segments: [
             "Introduction to Focus",
             "What is Focus?",
@@ -340,7 +362,8 @@
             "Lesson 2 Outro"
           ]
         },
-        "Lesson 3 - Semantics Basics": {
+        {
+          name:"Lesson 3 - Semantics Basics",
           segments: [
             "Semantics Introduction",
             "Assistive Technology",
@@ -361,7 +384,8 @@
             "Lesson 3 Outro"
           ]
         },
-        "Lesson 4 - Semantics: Navigating Content": {
+        {
+          name: "Lesson 4 - Semantics: Navigating Content",
           segments: [
             "Semantics - Navigating content - Intro",
             "Navigating with a screen reader",
@@ -377,7 +401,8 @@
             "Outro Lesson 4"
           ]
         },
-        "Lesson 5 - ARIA": {
+        {
+          name: "Lesson 5 - ARIA",
           segments: [
             "Intro to Semantics: ARIA",
             "Why ARIA",
@@ -401,7 +426,8 @@
             "Outro Lesson 5"
           ]
         },
-        "Lesson 6 - Style": {
+        {
+          name: "Lesson 6 - Style",
           segments: [
             "Introduction to Style",
             "Working with focus styles",
@@ -424,11 +450,13 @@
             "Course Outro"
           ]
         }
-      }
+      ]
     },
-    "Front-End Frameworks": {
-      sections: {
-        "Features of Single Page Apps": {
+    {
+      name: "Front-End Frameworks",
+      sections: [
+        {
+          name: "Features of Single Page Apps",
           segments: [
             "Welcome",
             "How To Be Successful",
@@ -446,7 +474,8 @@
             "Outro"
           ]
         },
-        "Examine a Framework's Source": {
+        {
+          name: "Examine a Framework's Source",
           segments: [
             "A Framework's Base Features",
             "What is a template?",
@@ -476,7 +505,8 @@
             "Outro"
           ]
         },
-        "Angular": {
+        {
+          name: "Angular",
           segments: [
             "Welcome to Angular",
             "Angular what?",
@@ -515,7 +545,8 @@
             "Outro"
           ]
         },
-        "Ember": {
+        {
+          name: "Ember",
           segments: [
             "Welcome to Ember",
             "Required ES6 Knowledge",
@@ -547,11 +578,13 @@
             "Outro"
           ]
         }
-      }
+      ]
     },
-    "Client-Server Communications": {
-      sections: {
-        "HTTP's Request/Response Cycle": {
+    {
+      name: "Client-Server Communications",
+      sections: [
+        {
+          name: "HTTP's Request/Response Cycle",
           segments: [
             "Intro",
             "HTTP Requests",
@@ -567,7 +600,8 @@
             "Outro"
           ]
         },
-        "HTTP/1": {
+        {
+          name: "HTTP/1",
           segments: [
             "HTTP Intro",
             "The Netcat Command",
@@ -584,7 +618,8 @@
             "Outro"
           ]
         },
-        "HTTPS": {
+        {
+          name: "HTTPS",
           segments: [
             "HTTPS Intro",
             "Securing HTTP",
@@ -602,7 +637,8 @@
             "Outro"
           ]
         },
-        "HTTP/2": {
+        {
+          name: "HTTP/2",
           segments: [
             "HTTP/2 Intro",
             "HTTP/1 Problem: Head of Line Blocking",
@@ -615,7 +651,8 @@
             "Outro"
           ]
         },
-        "Security": {
+        {
+          name: "Security",
           segments: [
             "Security Intro",
             "Origins",
@@ -633,7 +670,7 @@
             "Course Outro"
           ]
         }
-      }
+      ]
     }
   ];
 
