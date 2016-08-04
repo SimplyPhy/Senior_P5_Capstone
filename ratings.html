@@ -7,6 +7,13 @@
     .inputDiv {
       display: block;
     }
+    .date {
+      display: inline-block;
+      margin-bottom: 1em;
+    }
+    .rating {
+      margin: 1em 0;
+    }
     textarea {
       resize: none;
     }
@@ -24,9 +31,29 @@
 <body>
   <div id="inputDiv" class="inputDiv">
     <form id="inputForm" class="inputForm">
+      <div>
+        <span>Date: </span>
+        <input type="text" name="date" placeholder="date" class="date">
+      </div>
+      <div>
+      <span>Courses: </span>
       <select name="courses" class="courses"></select>
-      <input type="text" name="date" placeholder="date" class="date">
-      <input type="number" name="rating" min="1" max="10" width="65" placeholder="Rating" class="rating">
+      </div>
+      <div class="rating">
+      <span>Rating: </span>
+      <select type="text" name="rating">
+        <option value="0">Pick a rating</option>
+        <option value="1.0">1.0 - Awful</option>
+        <option value="1.5">1.5 - Really Bad</option>
+        <option value="2.0">2.0 - Bad</option>
+        <option value="2.5">2.5 - Lacking</option>
+        <option value="3.0">3.0 - Okay</option>
+        <option value="3.5">3.5 - Decent</option>
+        <option value="4.0">4.0 - Good</option>
+        <option value="4.5">4.5 - Really Good</option>
+        <option value="5.0">5.0 - Amazing</option>
+      </select>
+      </div>
       <textarea name="like" placeholder="Tell us what you like!" rows="5" cols="50" resize="none" class="like"></textarea>
       <textarea name="dislike" placeholder="Let us know how we can improve!" rows="5" cols="50" resize="none" class="dislike"></textarea>
       <textarea name="questions" placeholder="Need help?  Post your question here!" rows="5" cols="50" resize="none" class="questions"></textarea>
