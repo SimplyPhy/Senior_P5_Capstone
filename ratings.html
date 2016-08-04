@@ -11,7 +11,7 @@
       display: inline-block;
       margin-bottom: 1em;
     }
-    .rating {
+    .rating_div {
       margin: 1em 0;
     }
     textarea {
@@ -27,21 +27,22 @@
       display: block;
     }
   </style>
+  <link rel="stylesheet" href="jquery-ui.min.css">
 </head>
 <body>
   <div id="inputDiv" class="inputDiv">
     <form id="inputForm" class="inputForm">
       <div>
         <span>Date: </span>
-        <input type="text" name="date" placeholder="date" class="date">
+        <input type="text" name="date" class="date">
       </div>
       <div>
-      <span>Courses: </span>
-      <select name="courses" class="courses"></select>
+        <span>Courses: </span>
+        <select name="courses" class="courses"></select>
       </div>
-      <div class="rating">
+      <div class="rating_div">
       <span>Rating: </span>
-      <select type="text" name="rating">
+      <select type="text" name="rating" class="rating_select">
         <option value="0">Pick a rating</option>
         <option value="1.0">1.0 - Awful</option>
         <option value="1.5">1.5 - Really Bad</option>
@@ -57,11 +58,13 @@
       <textarea name="like" placeholder="Tell us what you like!" rows="5" cols="50" resize="none" class="like"></textarea>
       <textarea name="dislike" placeholder="Let us know how we can improve!" rows="5" cols="50" resize="none" class="dislike"></textarea>
       <textarea name="questions" placeholder="Need help?  Post your question here!" rows="5" cols="50" resize="none" class="questions"></textarea>
-      <input type="button" name="submit" value="submit" class="submit_button">
+      <input type="button" name="submit" value="submit" class="submit">
     </form>
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="jquery-ui.min.js"></script>
+
   <script defer src="model.js"></script>
   <script defer src="ratings.js"></script>
 </body>

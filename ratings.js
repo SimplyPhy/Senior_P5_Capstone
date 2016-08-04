@@ -1,5 +1,19 @@
 (function(G){
 
+  // Store course selection boxes
+  var $courseSelection = $('.courses'),
+      $sectionSelection, // might not exist at load
+      $segmentSelection; // might not exist at load
+
+  // Store other selection boxes
+  var $dateSelection = $('.date'),
+      $ratingSelection = $('.rating_select'),
+      $likeSelection = $('.like'),
+      $dislikeSelection = $('.dislike'),
+      $questionsSelection = $('.questions'),
+      $submitSelection = $('.submit');
+
+
   /*  Returns a string containing today's date in month/day/year format
    */
   function todaysDate() {
@@ -7,21 +21,17 @@
     var month = date.getMonth()+1;
     var day = date.getDate();
 
-    var output = (month<10 ? '0' : '') + month + '/' +
-        (day<10 ? '0' : '') + day + '/' +
+    var output = (month < 10 ? '0' : '') + month + '/' +
+        (day < 10 ? '0' : '') + day + '/' +
         date.getFullYear();
 
     return output;
   }
-  // Set the date input to today's date.
-  G.$date = $('.date');
-  G.$date.val(todaysDate());
 
+  // Pre-set the date input to today's date.
+  $dateSelection.val(todaysDate());
+  $dateSelection.datepicker();
 
-  // Store selection boxes
-  var $courseSelection = $('.courses'),
-      $sectionSelection,
-      $segmentSelection;
 
   /* Fills the courses selection box with all course names, with the default selection empty
    */
@@ -118,5 +128,77 @@
       }
     });
   }
+
+  // set global input values
+  $ratingSelection.change(function(){
+    if($(this).val() > 0) {
+      G.rating = $(this).val();
+    } else {
+      G.rating = undefined;
+    }
+  });
+
+  $submitSelection.click(function(){
+
+    if ($likeSelection.val().length === 0) {
+      G.like = undefined; }
+    else {
+      G.like = $likeSelection.val();
+    }
+    if ($dislikeSelection.val().length === 0) {
+      G.dislike = undefined;
+    } else {
+      G.dislike = $dislikeSelection.val();
+    }
+    if ($questionsSelection.val().length === 0) {
+      G.questions = undefined;
+    } else {
+      G.questions = $questionsSelection.val();
+    }
+    if ($ratingSelection.val() === 0) {
+      G.rating = undefined;
+    } else {
+      G.rating = $ratingSelection.val();
+    }
+    if (!courseName) {
+      G.courseName = undefined;
+      G.courseValue = undefined;
+    } else {
+      G.courseName = courseName;
+      G.courseValue = courseValue;
+    }
+    if (!sectionName) {
+      G.sectionName = undefined;
+      G.sectionValue = undefined;
+    } else {
+      G.sectionName = sectionName;
+      G.sectionValue = sectionValue;
+    }
+    if (!segmentName) {
+      G.segmentName = undefined;
+      G.segmentValue = undefined;
+    } else {
+      G.segmentName = segmentName;
+      G.segmentValue = segmentValue;
+    }
+    if (!$dateSelection.val()) {
+      G.date = undefined;
+    } else {
+      G.date = $dateSelection.val();
+    }
+
+
+    console.log("date: " + G.date);
+    console.log("course: " + G.courseName + "  ( " + G.courseValue + " )");
+    console.log("section: " + G.sectionName + "  ( " + G.sectionValue + " )");
+    console.log("segment: " + G.segmentName + "  ( " + G.segmentValue + " )");
+    console.log("rating: " + G.rating);
+    console.log("like: " + G.like);
+    console.log("dislike: " + G.dislike);
+    console.log("questions: " + G.questions);
+
+});
+
+
 
 })(window);
