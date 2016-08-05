@@ -35,7 +35,7 @@
 
   /* Fills the courses selection box with all course names, with the default selection empty
    */
-  $courseSelection.append(new Option('', 0));
+  $courseSelection.append(new Option(undefined, undefined));
 
   for (var i = 0; i < G.courses.length; i++) {
     $courseSelection.append(new Option(G.courses[i].name, i));
@@ -62,12 +62,19 @@
         $segmentSelection.remove();
       }
 
-      for(var i = 0; i < G.courses.length; i++) {
-        if($(this).val() == i) {
+      if($(this).val() === "") {
+        courseName = undefined;
+        courseValue = undefined;
+        $sectionSelection.remove();
+        return;
+      }
 
-          courseName = G.courses[i].name;
-          courseValue = i;
-          courseSections = G.courses[i].sections;
+      for(var i = 0; i < G.courses.length; i++) {
+
+        if($(this).val() == i) {
+            courseName = G.courses[i].name;
+            courseValue = i;
+            courseSections = G.courses[i].sections;
 
           if($('.sections').length === 0) {
             $('.courses').first().after('<select name="sections" class="sections"></select>');
@@ -140,27 +147,15 @@
 
   $submitSelection.click(function(){
 
-    if ($likeSelection.val().length === 0) {
-      G.like = undefined; }
-    else {
-      G.like = $likeSelection.val();
-    }
-    if ($dislikeSelection.val().length === 0) {
-      G.dislike = undefined;
+    // if the user input a date, set it to G
+    if (!$dateSelection.val()) {
+      G.date = undefined;
     } else {
-      G.dislike = $dislikeSelection.val();
+      G.date = $dateSelection.val();
     }
-    if ($questionsSelection.val().length === 0) {
-      G.questions = undefined;
-    } else {
-      G.questions = $questionsSelection.val();
-    }
-    if ($ratingSelection.val() === 0) {
-      G.rating = undefined;
-    } else {
-      G.rating = $ratingSelection.val();
-    }
-    if (!courseName) {
+
+    // if the user input a course, section, and/or segment , set them to G
+    if (courseName === "") {
       G.courseName = undefined;
       G.courseValue = undefined;
     } else {
@@ -181,13 +176,32 @@
       G.segmentName = segmentName;
       G.segmentValue = segmentValue;
     }
-    if (!$dateSelection.val()) {
-      G.date = undefined;
+
+    // if the user input a rating, set it to G
+    if ($ratingSelection.val() === "0") {
+      G.rating = undefined;
     } else {
-      G.date = $dateSelection.val();
+      G.rating = $ratingSelection.val();
     }
 
+    // if the user input praise, critiques, and/or questions, set them to G
+    if ($likeSelection.val().length === 0) {
+      G.like = undefined; }
+    else {
+      G.like = $likeSelection.val();
+    }
+    if ($dislikeSelection.val().length === 0) {
+      G.dislike = undefined;
+    } else {
+      G.dislike = $dislikeSelection.val();
+    }
+    if ($questionsSelection.val().length === 0) {
+      G.questions = undefined;
+    } else {
+      G.questions = $questionsSelection.val();
+    }
 
+    // log user input
     console.log("date: " + G.date);
     console.log("course: " + G.courseName + "  ( " + G.courseValue + " )");
     console.log("section: " + G.sectionName + "  ( " + G.sectionValue + " )");
@@ -197,7 +211,7 @@
     console.log("dislike: " + G.dislike);
     console.log("questions: " + G.questions);
 
-});
+  });
 
 
 
