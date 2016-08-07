@@ -12,26 +12,7 @@
       $dislikeSelection = $('.dislike'),
       $questionsSelection = $('.questions'),
       $submitSelection = $('.submit');
-
-  // constructor for organizing completed form data
-  // function UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
-
-  //   this.date = date;
-  //   this.courseName = courseName;
-  //   this.courseValue = courseValue;
-  //   this.sectionName = sectionName;
-  //   this.sectionValue = sectionValue;
-  //   this.segmentName = segmentName;
-  //   this.segmentValue = segmentValue;
-  //   this.rating = rating;
-  //   this.like = like;
-  //   this.dislike = dislike;
-  //   this.questions = questions;
-
-  //   // A more sophisticated UID, or some other form of validation, will be required for the production version
-  //   // of this app, as names/values could change when Udacity makes changes to their courses
-  //   this.UID = courseName + "*" + sectionName + "*" + segmentName;
-  // }
+      $submitSelection.prop("disabled", true); // select button initially disabled
 
   /*  Returns a string containing today's date in month/day/year format
    */
@@ -50,7 +31,6 @@
   // Pre-set the date input to today's date.
   $dateSelection.val(todaysDate());
   $dateSelection.datepicker();
-
 
   /* Fills the courses selection box with all course names, with the default selection undefined
    */
@@ -206,13 +186,12 @@
 
       if(localStorage[UID]) {
         previousInput = JSON.parse(localStorage.getItem(UID));
+        $submitSelection.prop("disabled", false);
         inputPreviousData();
       }
 
     });
   } // end segmentSelect
-
-
 
   // instantiate user input found in localStorage for current UID
   var savedDate,
@@ -231,30 +210,23 @@
     savedDislike = previousInput.dislike;
     savedQuestions = previousInput.questions;
 
-    console.log("date: " + savedDate + " " +
-                "rating: " + savedRating + " " +
-                "like: " + savedLike + " " +
-                "dislike: " + savedDislike + " " +
-                "questions: " + savedQuestions + " "
-    );
-
+    // set form values to what was previously submitted
     $ratingSelection.val(savedRating);
     $likeSelection.val(savedLike);
     $dislikeSelection.val(savedDislike);
     $questionsSelection.val(savedQuestions);
+    $submitSelection.val("update");
   } // end inputPreviousData
 
+  // simple form value reset function
   function resetFields() {
     $ratingSelection.val(0);
     $likeSelection.val("");
     $dislikeSelection.val("");
     $questionsSelection.val("");
+    $submitSelection.val("submit");
+    $submitSelection.prop("disabled", true);
   }
-
-
-
-
-
 
   // set date value, and change it when it changes
   date = $dateSelection.val();
@@ -264,16 +236,19 @@
     } else {
       date = $dateSelection.val();
     }
-
   });
 
-  // set rating value, and change it when it changes
+  // set rating value, and change it when it changes.  Also, enable/disable submit button
   rating = $ratingSelection.val();
   $ratingSelection.change(function(){
     if($ratingSelection.val() > 0) {
       rating = $ratingSelection.val();
+      if(segmentName){
+        $submitSelection.prop("disabled", false);
+      }
     } else {
       rating = undefined;
+      $submitSelection.prop("disabled", true);
     }
   });
 
@@ -298,6 +273,7 @@
     // create a UserInput object and store it in a new sessionUserInput a key value = UID
     sessionUserInput[UID] = new G.UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions);
 
+    // set localStorage with property UID to a JSON version of the curent sessionUserInput
     localStorage.setItem(UID, JSON.stringify(sessionUserInput[UID]));
 
     G.storage = {};
