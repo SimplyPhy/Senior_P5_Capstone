@@ -1,26 +1,28 @@
 (function(G){
 
+  // constructor for organizing completed form data
+  G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
 
-  // G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+    this.date = date;
+    this.courseName = courseName;
+    this.courseValue = courseValue;
+    this.sectionName = sectionName;
+    this.sectionValue = sectionValue;
+    this.segmentName = segmentName;
+    this.segmentValue = segmentValue;
+    this.rating = rating;
+    this.like = like;
+    this.dislike = dislike;
+    this.questions = questions;
 
-  //   this.date = date;
-  //   this.courseName = courseName;
-  //   this.courseValue = courseValue;
-  //   this.sectionName = sectionName;
-  //   this.sectionValue = sectionValue;
-  //   this.segmentName = segmentName;
-  //   this.segmentValue = segmentValue;
-  //   this.rating = rating;
-  //   this.like = like;
-  //   this.dislike = dislike;
-  //   this.questions = questions;
-
-  //   // A more sophisticated UID, or some other form of validation, will be required for the production version
-  //   // of this app, as names/values could change when Udacity makes changes to their courses
-  //   this.UID = courseName + "*" + sectionName + "*" + segmentName;
-  // };
+    // A more sophisticated UID, or some other form of validation, will be required for the production version
+    // of this app, as names/values could change when Udacity makes changes to their courses
+    this.UID = courseName + "*" + sectionName + "*" + segmentName;
+  };
 
   // The entire Senior Web Dev (SWDND) course catalog, complete with course sections and section segments.
+  // Note: Apparently Udacity changes their course names sometimes.  E.g. when I double checked for segment
+  // name duplicates, I discovered that Udacity had already changed all but one duplicate segment name xD.
   G.courses = [
     {
       name: "Welcome to the Nanodegree",
@@ -198,7 +200,7 @@
             "Setting Up ESLint",
             "Setting up ESLint in Gulp",
             "Unit Testing in Gulp",
-            "Unit Testing in Gulp Part 2",
+            "Unit Testing in Gulp Part 2", // I added " Part 2" to make the UID unique for this segment
             "What's Next?",
             "Continuous Integration",
             "Lesson Outro"
@@ -311,7 +313,7 @@
           segments: [
             "Introducing the IDB Promised Library",
             "Getting Started with IDB",
-            "Getting Started with IDB Part 2",
+            "Quiz: Getting Started with IDB",
             "More IDB",
             "Using the IDB Cache and Display Entries",
             "Quiz: Using IDB Cache",

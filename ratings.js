@@ -14,24 +14,24 @@
       $submitSelection = $('.submit');
 
   // constructor for organizing completed form data
-  function UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+  // function UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
 
-    this.date = date;
-    this.courseName = courseName;
-    this.courseValue = courseValue;
-    this.sectionName = sectionName;
-    this.sectionValue = sectionValue;
-    this.segmentName = segmentName;
-    this.segmentValue = segmentValue;
-    this.rating = rating;
-    this.like = like;
-    this.dislike = dislike;
-    this.questions = questions;
+  //   this.date = date;
+  //   this.courseName = courseName;
+  //   this.courseValue = courseValue;
+  //   this.sectionName = sectionName;
+  //   this.sectionValue = sectionValue;
+  //   this.segmentName = segmentName;
+  //   this.segmentValue = segmentValue;
+  //   this.rating = rating;
+  //   this.like = like;
+  //   this.dislike = dislike;
+  //   this.questions = questions;
 
-    // A more sophisticated UID, or some other form of validation, will be required for the production version
-    // of this app, as names/values could change when Udacity makes changes to their courses
-    this.UID = courseName + "*" + sectionName + "*" + segmentName;
-  }
+  //   // A more sophisticated UID, or some other form of validation, will be required for the production version
+  //   // of this app, as names/values could change when Udacity makes changes to their courses
+  //   this.UID = courseName + "*" + sectionName + "*" + segmentName;
+  // }
 
   /*  Returns a string containing today's date in month/day/year format
    */
@@ -68,12 +68,14 @@
       sectionValue,
       sectionSegments,
       segmentName,
-      segmentValue,
-      UID;
+      segmentValue;
 
   // performs UI and variable assignment tasks associated with course selection changes
   function courseSelect() {
     $courseSelection.change(function() {
+
+      // reset user input fields
+      resetFields();
 
       // reset section and segment values
       sectionName = undefined;
@@ -110,9 +112,10 @@
             $sectionSelection = $('.sections');
             sectionSelect();
           }
-          $sectionSelection.empty();
 
+          $sectionSelection.empty();
           $sectionSelection.append(new Option(undefined, undefined));
+
           for(var j = 0; j < courseSections.length; j++) {
             $sectionSelection.append(new Option(courseSections[j].name, j));
           }
@@ -126,6 +129,9 @@
   // performs UI and variable assignment tasks associated with section selection changes
   function sectionSelect() {
     $sectionSelection.change(function() {
+
+      // reset user input fields
+      resetFields();
 
       // reset segment values
       segmentName = undefined;
@@ -155,8 +161,8 @@
             $segmentSelection = $('.segments');
             segmentSelect();
           }
-          $segmentSelection.empty();
 
+          $segmentSelection.empty();
           $segmentSelection.append(new Option(undefined, undefined));
 
           for(var j = 0; j < sectionSegments.length; j++) {
@@ -168,9 +174,17 @@
     });
   } // end sectionSelect()
 
+  // intantiate session input to be used for localStorage
+  var sessionUserInput = {},
+      previousInput,
+      UID;
+
   // performs UI and variable assignment tasks associated with segment selection changes
   function segmentSelect() {
     $segmentSelection.change(function() {
+
+      // reset user input fields
+      resetFields();
 
       /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
        * to the selected segment.
@@ -187,73 +201,104 @@
           segmentValue = i;
         }
       }
-      // add conditions here, or call to function to check if this UID exists in localStorage
+
+      UID = courseName + "*" + sectionName + "*" + segmentName;
+
+      if(localStorage[UID]) {
+        previousInput = JSON.parse(localStorage.getItem(UID));
+        inputPreviousData();
+      }
+
     });
   } // end segmentSelect
 
 
-  $submitSelection.click(function(){
 
-    // set date value
+  // instantiate user input found in localStorage for current UID
+  var savedDate,
+      savedRating,
+      savedLike,
+      savedDislike,
+      savedQuestions;
+
+  // function notes here
+  function inputPreviousData() {
+
+    // set user input found in localStorage for current UID
+    savedDate = previousInput.date; // used for reference to previous entries, not auto-filling form
+    savedRating = previousInput.rating;
+    savedLike = previousInput.like;
+    savedDislike = previousInput.dislike;
+    savedQuestions = previousInput.questions;
+
+    console.log("date: " + savedDate + " " +
+                "rating: " + savedRating + " " +
+                "like: " + savedLike + " " +
+                "dislike: " + savedDislike + " " +
+                "questions: " + savedQuestions + " "
+    );
+
+    $ratingSelection.val(savedRating);
+    $likeSelection.val(savedLike);
+    $dislikeSelection.val(savedDislike);
+    $questionsSelection.val(savedQuestions);
+  } // end inputPreviousData
+
+  function resetFields() {
+    $ratingSelection.val(0);
+    $likeSelection.val("");
+    $dislikeSelection.val("");
+    $questionsSelection.val("");
+  }
+
+
+
+
+
+
+  // set date value, and change it when it changes
+  date = $dateSelection.val();
+  $dateSelection.change(function() {
     if (!$dateSelection.val()) {
       date = undefined;
     } else {
       date = $dateSelection.val();
     }
 
-    // set rating value
+  });
+
+  // set rating value, and change it when it changes
+  rating = $ratingSelection.val();
+  $ratingSelection.change(function(){
     if($ratingSelection.val() > 0) {
       rating = $ratingSelection.val();
     } else {
       rating = undefined;
     }
+  });
 
-    // if the user input praise, critiques, and/or questions, set them to G
-    if ($likeSelection.val().length === 0) {
-      like = undefined; }
-    else {
-      like = $likeSelection.val();
-    }
-    if ($dislikeSelection.val().length === 0) {
-      dislike = undefined;
-    } else {
-      dislike = $dislikeSelection.val();
-    }
-    if ($questionsSelection.val().length === 0) {
-      questions = undefined;
-    } else {
-      questions = $questionsSelection.val();
-    }
-    UID = courseName + "*" + sectionName + "*" + segmentName;
-    // console.log(UID);
+  /* This function performs all actions following the submit button being clicked.
+   * More notes to be added once the function is finalized.
+  */
+  $submitSelection.click(function(){
 
-    var sessionUserInput = {};
-    sessionUserInput[UID] = new UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions);
+    // if the user provides praise, critiques, and/or questions, set their values
+    if ($likeSelection.val().length === 0)
+         { like = undefined; }
+    else { like = $likeSelection.val(); }
 
-    localStorage.setItem(UID, JSON.stringify(sessionUserInput));
-    // console.log(localStorage[UID]);
-    // console.log(JSON.parse(localStorage.getItem(UID)));
+    if ($dislikeSelection.val().length === 0)
+         { dislike = undefined; }
+    else { dislike = $dislikeSelection.val(); }
 
-    if(localStorage[UID]) {
-      var previousInput = JSON.parse(localStorage.getItem(UID));
+    if ($questionsSelection.val().length === 0)
+         { questions = undefined; }
+    else { questions = $questionsSelection.val(); }
 
+    // create a UserInput object and store it in a new sessionUserInput a key value = UID
+    sessionUserInput[UID] = new G.UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions);
 
-
-    } else {
-
-
-    }
-
-    // log user input
-    console.log("date: " + date);
-    console.log("course: " + courseName + "  ( " + courseValue + " )");
-    console.log("section: " + sectionName + "  ( " + sectionValue + " )");
-    console.log("segment: " + segmentName + "  ( " + segmentValue + " )");
-    console.log("rating: " + rating);
-    console.log("like: " + like);
-    console.log("dislike: " + dislike);
-    console.log("questions: " + questions);
-    console.log(UID);
+    localStorage.setItem(UID, JSON.stringify(sessionUserInput[UID]));
 
     G.storage = {};
     var five = 5;
