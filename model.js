@@ -1,16 +1,26 @@
 (function(G){
 
-  G.UserInput = function(name, rating, like, dislike, questions){
 
-    this.name = name;
+  G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+
+    this.date = date;
+    this.courseName = courseName;
+    this.courseValue = courseValue;
+    this.sectionName = sectionName;
+    this.sectionValue = sectionValue;
+    this.segmentName = segmentName;
+    this.segmentValue = segmentValue;
     this.rating = rating;
     this.like = like;
     this.dislike = dislike;
     this.questions = questions;
-    this.date = G.$date;
 
+    // A more sophisticated UID, or some other form of validation, will be required for the production version
+    // of this app, as names/values could change when Udacity makes changes to their courses
+    this.UID = courseName + "*" + sectionName + "*" + segmentName;
   };
 
+  // The entire Senior Web Dev course catalog, complete with course sections and section segments.
   G.courses = [
     {
       name: "Welcome to the Nanodegree",
@@ -68,12 +78,12 @@
             "Interview with Luke W. Part 3",
             "Label Sizing and Positions",
             "Placeholders",
-            "Placeholder",
+            "Quiz: Placeholder",
             "Calendars",
-            "Calendars",
+            "Quiz: Calendars",
             "Typos",
             "Autocomplete",
-            "Autocomplete",
+            "Quiz: Autocomplete",
             "Autofocus",
             "Use Past Data to Fill Inputs",
             "Validation",
@@ -188,7 +198,7 @@
             "Setting Up ESLint",
             "Setting up ESLint in Gulp",
             "Unit Testing in Gulp",
-            "Unit Testing in Gulp",
+            "Unit Testing in Gulp Part 2",
             "What's Next?",
             "Continuous Integration",
             "Lesson Outro"
@@ -301,7 +311,7 @@
           segments: [
             "Introducing the IDB Promised Library",
             "Getting Started with IDB",
-            "Getting Started with IDB",
+            "Getting Started with IDB Part 2",
             "More IDB",
             "Using the IDB Cache and Display Entries",
             "Quiz: Using IDB Cache",
@@ -673,7 +683,7 @@
       ]
     }
   ];
-
+console.log(G.courses);
 
 
   // I need a global constructor function that produces new courses, in all their glory, and which will

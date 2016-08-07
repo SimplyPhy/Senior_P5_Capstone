@@ -13,6 +13,25 @@
       $questionsSelection = $('.questions'),
       $submitSelection = $('.submit');
 
+  // constructor for organizing completed form data
+  function UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+
+    this.date = date;
+    this.courseName = courseName;
+    this.courseValue = courseValue;
+    this.sectionName = sectionName;
+    this.sectionValue = sectionValue;
+    this.segmentName = segmentName;
+    this.segmentValue = segmentValue;
+    this.rating = rating;
+    this.like = like;
+    this.dislike = dislike;
+    this.questions = questions;
+
+    // A more sophisticated UID, or some other form of validation, will be required for the production version
+    // of this app, as names/values could change when Udacity makes changes to their courses
+    this.UID = courseName + "*" + sectionName + "*" + segmentName;
+  }
 
   /*  Returns a string containing today's date in month/day/year format
    */
@@ -48,21 +67,22 @@
       sectionValue,
       sectionSegments,
       segmentName,
-      segmentValue;
+      segmentValue,
+      UID;
 
   function courseSelect() {
     $courseSelection.change(function() {
 
-      sectionName = "";
-      sectionValue = "";
-      segmentName = "";
-      segmentValue = "";
+      sectionName = undefined;
+      sectionValue = undefined;
+      segmentName = undefined;
+      segmentValue = undefined;
 
       if($segmentSelection) {
         $segmentSelection.remove();
       }
 
-      if($(this).val() === "") {
+      if($courseSelection.val() === "") {
         courseName = undefined;
         courseValue = undefined;
         $sectionSelection.remove();
@@ -83,7 +103,7 @@
           }
           $sectionSelection.empty();
 
-          $sectionSelection.append(new Option('', 0));
+          $sectionSelection.append(new Option(undefined, undefined));
           for(var j = 0; j < courseSections.length; j++) {
             $sectionSelection.append(new Option(courseSections[j].name, j));
           }
@@ -96,8 +116,15 @@
   function sectionSelect() {
     $sectionSelection.change(function() {
 
-      segmentName = "";
-      segmentValue = "";
+      segmentName = undefined;
+      segmentValue = undefined;
+
+      if($sectionSelection.val() === "") {
+        sectionName = undefined;
+        sectionValue = undefined;
+        $segmentSelection.remove();
+        return;
+      }
 
       for(var i = 0; i < courseSections.length; i++) {
         if($(this).val() == i) {
@@ -113,7 +140,7 @@
           }
           $segmentSelection.empty();
 
-          $segmentSelection.append(new Option('', 0));
+          $segmentSelection.append(new Option(undefined, undefined));
 
           for(var j = 0; j < sectionSegments.length; j++) {
             $segmentSelection.append(new Option(sectionSegments[j], j));
@@ -127,89 +154,93 @@
   function segmentSelect() {
     $segmentSelection.change(function() {
       for(var i = 0; i < sectionSegments.length; i++) {
+
+        if($segmentSelection.val() === "") {
+          segmentName = undefined;
+          segmentValue = undefined;
+          return;
+        }
+
         if($(this).val() == i) {
 
           segmentName = sectionSegments[i];
           segmentValue = i;
         }
       }
+      // add conditions here, or call to function to check if this UID exists in localStorage
     });
   }
 
-  // set global input values
-  $ratingSelection.change(function(){
-    if($(this).val() > 0) {
-      G.rating = $(this).val();
-    } else {
-      G.rating = undefined;
-    }
-  });
 
   $submitSelection.click(function(){
 
-    // if the user input a date, set it to G
+    // set date value
     if (!$dateSelection.val()) {
-      G.date = undefined;
+      date = undefined;
     } else {
-      G.date = $dateSelection.val();
+      date = $dateSelection.val();
     }
 
-    // if the user input a course, section, and/or segment , set them to G
-    if (courseName === "") {
-      G.courseName = undefined;
-      G.courseValue = undefined;
+    // set rating value
+    if($ratingSelection.val() > 0) {
+      rating = $ratingSelection.val();
     } else {
-      G.courseName = courseName;
-      G.courseValue = courseValue;
-    }
-    if (!sectionName) {
-      G.sectionName = undefined;
-      G.sectionValue = undefined;
-    } else {
-      G.sectionName = sectionName;
-      G.sectionValue = sectionValue;
-    }
-    if (!segmentName) {
-      G.segmentName = undefined;
-      G.segmentValue = undefined;
-    } else {
-      G.segmentName = segmentName;
-      G.segmentValue = segmentValue;
-    }
-
-    // if the user input a rating, set it to G
-    if ($ratingSelection.val() === "0") {
-      G.rating = undefined;
-    } else {
-      G.rating = $ratingSelection.val();
+      rating = undefined;
     }
 
     // if the user input praise, critiques, and/or questions, set them to G
     if ($likeSelection.val().length === 0) {
-      G.like = undefined; }
+      like = undefined; }
     else {
-      G.like = $likeSelection.val();
+      like = $likeSelection.val();
     }
     if ($dislikeSelection.val().length === 0) {
-      G.dislike = undefined;
+      dislike = undefined;
     } else {
-      G.dislike = $dislikeSelection.val();
+      dislike = $dislikeSelection.val();
     }
     if ($questionsSelection.val().length === 0) {
-      G.questions = undefined;
+      questions = undefined;
     } else {
-      G.questions = $questionsSelection.val();
+      questions = $questionsSelection.val();
+    }
+    UID = courseName + "*" + sectionName + "*" + segmentName;
+    // console.log(UID);
+
+    var sessionUserInput = {};
+    sessionUserInput[UID] = new UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions);
+
+    localStorage.setItem(UID, JSON.stringify(sessionUserInput));
+    // console.log(localStorage[UID]);
+    // console.log(JSON.parse(localStorage.getItem(UID)));
+
+    if(localStorage[UID]) {
+      var previousInput = JSON.parse(localStorage.getItem(UID));
+
+
+
+    } else {
+
+
     }
 
     // log user input
-    console.log("date: " + G.date);
-    console.log("course: " + G.courseName + "  ( " + G.courseValue + " )");
-    console.log("section: " + G.sectionName + "  ( " + G.sectionValue + " )");
-    console.log("segment: " + G.segmentName + "  ( " + G.segmentValue + " )");
-    console.log("rating: " + G.rating);
-    console.log("like: " + G.like);
-    console.log("dislike: " + G.dislike);
-    console.log("questions: " + G.questions);
+    console.log("date: " + date);
+    console.log("course: " + courseName + "  ( " + courseValue + " )");
+    console.log("section: " + sectionName + "  ( " + sectionValue + " )");
+    console.log("segment: " + segmentName + "  ( " + segmentValue + " )");
+    console.log("rating: " + rating);
+    console.log("like: " + like);
+    console.log("dislike: " + dislike);
+    console.log("questions: " + questions);
+    console.log(UID);
+
+    G.storage = {};
+    var five = 5;
+    var location = [];
+    location.push(courseValue, sectionValue, segmentValue);//"G.courses[" + courseValue + "].sections[" + sectionValue + "].segments[" + segmentValue + "]";
+    // G.storage[location] = new G.UserInput(G.date, G.courseName, G.sectionName, G.segmentName, G.rating, G.like, G.dislike, G.questions);
+    // console.log(G.storage[location]);
 
   });
 
