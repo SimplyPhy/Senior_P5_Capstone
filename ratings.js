@@ -52,7 +52,7 @@
   $dateSelection.datepicker();
 
 
-  /* Fills the courses selection box with all course names, with the default selection empty
+  /* Fills the courses selection box with all course names, with the default selection undefined
    */
   $courseSelection.append(new Option(undefined, undefined));
 
@@ -60,6 +60,7 @@
     $courseSelection.append(new Option(G.courses[i].name, i));
   }
 
+  // variable instantiation for unique course values
   var courseName,
       courseValue,
       courseSections,
@@ -70,18 +71,22 @@
       segmentValue,
       UID;
 
+  // performs UI and variable assignment tasks associated with course selection changes
   function courseSelect() {
     $courseSelection.change(function() {
 
+      // reset section and segment values
       sectionName = undefined;
       sectionValue = undefined;
       segmentName = undefined;
       segmentValue = undefined;
 
+      // remove segment selection box, if it exists
       if($segmentSelection) {
         $segmentSelection.remove();
       }
 
+      // if user has selects no course, reset course values and remove section selection box
       if($courseSelection.val() === "") {
         courseName = undefined;
         courseValue = undefined;
@@ -89,6 +94,10 @@
         return;
       }
 
+      /* This loop runs through all courses in the SWDND, assigning the name and value variables,
+       * creating a new select tag with class="sections", and populates it with new Options based on the
+       * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
+      */
       for(var i = 0; i < G.courses.length; i++) {
 
         if($(this).val() == i) {
@@ -110,15 +119,19 @@
         }
       }
     });
-  }
-  courseSelect(); // move this
+  } // end courseSelect()
+  // courseSelect is wrapped in a function incase it needs to be called again in future versions
+  courseSelect(); // call after function definition, or when document is loaded
 
+  // performs UI and variable assignment tasks associated with section selection changes
   function sectionSelect() {
     $sectionSelection.change(function() {
 
+      // reset segment values
       segmentName = undefined;
       segmentValue = undefined;
 
+      // if user has selects no section, reset section values and remove segment selection box
       if($sectionSelection.val() === "") {
         sectionName = undefined;
         sectionValue = undefined;
@@ -126,6 +139,10 @@
         return;
       }
 
+      /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
+       * creates a new select tag with class="segments", and populates it with new Options based on the
+       * names of the selected section's segments.  It also calls segmentSelect, if it had never been called.
+      */
       for(var i = 0; i < courseSections.length; i++) {
         if($(this).val() == i) {
 
@@ -148,13 +165,17 @@
 
         }
       }
-    }); // add segmentSelection function, and make it so when new course is selected, the sectionSelect box disappears and the values are reset
-  }
+    });
+  } // end sectionSelect()
 
+  // performs UI and variable assignment tasks associated with segment selection changes
   function segmentSelect() {
     $segmentSelection.change(function() {
-      for(var i = 0; i < sectionSegments.length; i++) {
 
+      /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
+       * to the selected segment.
+      */
+      for(var i = 0; i < sectionSegments.length; i++) {
         if($segmentSelection.val() === "") {
           segmentName = undefined;
           segmentValue = undefined;
@@ -162,14 +183,13 @@
         }
 
         if($(this).val() == i) {
-
           segmentName = sectionSegments[i];
           segmentValue = i;
         }
       }
       // add conditions here, or call to function to check if this UID exists in localStorage
     });
-  }
+  } // end segmentSelect
 
 
   $submitSelection.click(function(){

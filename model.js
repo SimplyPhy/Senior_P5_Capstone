@@ -1,26 +1,26 @@
 (function(G){
 
 
-  G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+  // G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
 
-    this.date = date;
-    this.courseName = courseName;
-    this.courseValue = courseValue;
-    this.sectionName = sectionName;
-    this.sectionValue = sectionValue;
-    this.segmentName = segmentName;
-    this.segmentValue = segmentValue;
-    this.rating = rating;
-    this.like = like;
-    this.dislike = dislike;
-    this.questions = questions;
+  //   this.date = date;
+  //   this.courseName = courseName;
+  //   this.courseValue = courseValue;
+  //   this.sectionName = sectionName;
+  //   this.sectionValue = sectionValue;
+  //   this.segmentName = segmentName;
+  //   this.segmentValue = segmentValue;
+  //   this.rating = rating;
+  //   this.like = like;
+  //   this.dislike = dislike;
+  //   this.questions = questions;
 
-    // A more sophisticated UID, or some other form of validation, will be required for the production version
-    // of this app, as names/values could change when Udacity makes changes to their courses
-    this.UID = courseName + "*" + sectionName + "*" + segmentName;
-  };
+  //   // A more sophisticated UID, or some other form of validation, will be required for the production version
+  //   // of this app, as names/values could change when Udacity makes changes to their courses
+  //   this.UID = courseName + "*" + sectionName + "*" + segmentName;
+  // };
 
-  // The entire Senior Web Dev course catalog, complete with course sections and section segments.
+  // The entire Senior Web Dev (SWDND) course catalog, complete with course sections and section segments.
   G.courses = [
     {
       name: "Welcome to the Nanodegree",
