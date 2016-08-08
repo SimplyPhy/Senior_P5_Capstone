@@ -1,7 +1,7 @@
 (function(G){
 
   // constructor for organizing completed form data
-  G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions){
+  G.UserInput = function(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions, notes){
 
     this.date = date;
     this.courseName = courseName;
@@ -14,6 +14,7 @@
     this.like = like;
     this.dislike = dislike;
     this.questions = questions;
+    this.notes = notes;
 
     // A more sophisticated UID, or some other form of validation, will be required for the production version
     // of this app, as names/values could change when Udacity makes changes to their courses
