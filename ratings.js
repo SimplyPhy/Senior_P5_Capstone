@@ -276,12 +276,10 @@
     // set localStorage with property UID to a JSON version of the curent sessionUserInput
     localStorage.setItem(UID, JSON.stringify(sessionUserInput[UID]));
 
-    G.storage = {};
-    var five = 5;
-    var location = [];
-    location.push(courseValue, sectionValue, segmentValue);//"G.courses[" + courseValue + "].sections[" + sectionValue + "].segments[" + segmentValue + "]";
-    // G.storage[location] = new G.UserInput(G.date, G.courseName, G.sectionName, G.segmentName, G.rating, G.like, G.dislike, G.questions);
-    // console.log(G.storage[location]);
+    // set submit button value to update
+    $submitSelection.val("update");
+
+    console.log(localStorage[UID]);
 
   });
 
