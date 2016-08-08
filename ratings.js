@@ -11,8 +11,11 @@
       $likeSelection = $('.like'),
       $dislikeSelection = $('.dislike'),
       $questionsSelection = $('.questions'),
+      $notesSelection = $('.notes'),
       $submitSelection = $('.submit');
-      $submitSelection.prop("disabled", true); // select button initially disabled
+
+  // select button initially disabled
+  $submitSelection.prop("disabled", true);
 
   /*  Returns a string containing today's date in month/day/year format
    */
@@ -185,6 +188,7 @@
       UID = courseName + "*" + sectionName + "*" + segmentName;
 
       if(localStorage[UID]) {
+        console.log(localStorage[UID]);
         previousInput = JSON.parse(localStorage.getItem(UID));
         $submitSelection.prop("disabled", false);
         inputPreviousData();
@@ -198,7 +202,8 @@
       savedRating,
       savedLike,
       savedDislike,
-      savedQuestions;
+      savedQuestions,
+      savedNotes;
 
   // function notes here
   function inputPreviousData() {
@@ -209,12 +214,14 @@
     savedLike = previousInput.like;
     savedDislike = previousInput.dislike;
     savedQuestions = previousInput.questions;
+    savedNotes = previousInput.notes;
 
     // set form values to what was previously submitted
     $ratingSelection.val(savedRating);
     $likeSelection.val(savedLike);
     $dislikeSelection.val(savedDislike);
     $questionsSelection.val(savedQuestions);
+    $notesSelection.val(savedNotes);
     $submitSelection.val("update");
   } // end inputPreviousData
 
@@ -224,9 +231,18 @@
     $likeSelection.val("");
     $dislikeSelection.val("");
     $questionsSelection.val("");
+    $notesSelection.val("");
     $submitSelection.val("submit");
     $submitSelection.prop("disabled", true);
   }
+
+  // instantiate variables to store user input
+  var rating,
+      date,
+      like,
+      dislike,
+      questions,
+      notes;
 
   // set date value, and change it when it changes
   date = $dateSelection.val();
@@ -243,10 +259,14 @@
   $ratingSelection.change(function(){
     if($ratingSelection.val() > 0) {
       rating = $ratingSelection.val();
+      console.log(typeof rating);
+      console.log(rating);
       if(segmentName){
         $submitSelection.prop("disabled", false);
+        console.log(segmentName);
       }
     } else {
+      console.log("rating: undefined");
       rating = undefined;
       $submitSelection.prop("disabled", true);
     }
@@ -256,6 +276,8 @@
    * More notes to be added once the function is finalized.
   */
   $submitSelection.click(function(){
+
+    console.log("rating: " + rating);
 
     // if the user provides praise, critiques, and/or questions, set their values
     if ($likeSelection.val().length === 0)
@@ -270,8 +292,15 @@
          { questions = undefined; }
     else { questions = $questionsSelection.val(); }
 
+    if ($notesSelection.val().length === 0)
+         { notes = undefined; }
+    else { notes = $notesSelection.val(); }
+
+    // the rating value must be > 0 in order for $submitSelection to be clicked
+    rating = $ratingSelection.val();
+
     // create a UserInput object and store it in a new sessionUserInput a key value = UID
-    sessionUserInput[UID] = new G.UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions);
+    sessionUserInput[UID] = new G.UserInput(date, courseName, courseValue, sectionName, sectionValue, segmentName, segmentValue, rating, like, dislike, questions, notes);
 
     // set localStorage with property UID to a JSON version of the curent sessionUserInput
     localStorage.setItem(UID, JSON.stringify(sessionUserInput[UID]));
