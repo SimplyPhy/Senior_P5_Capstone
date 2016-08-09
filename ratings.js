@@ -12,10 +12,13 @@
       $dislikeSelection = $('.dislike'),
       $questionsSelection = $('.questions'),
       $notesSelection = $('.notes'),
-      $submitSelection = $('.submit');
+      $submitSelection = $('.submit'),
+      $nextSegmentSelection = $('.next_segment');
 
   // select button initially disabled
   $submitSelection.prop("disabled", true);
+  $nextSegmentSelection.hide();
+
 
   /*  Returns a string containing today's date in month/day/year format
    */
@@ -53,9 +56,16 @@
       segmentName,
       segmentValue;
 
+  // variable instantiation for current selection
+  var $courseSelf,
+      $sectionSelf,
+      $segmentSelf;
+
   // performs UI and variable assignment tasks associated with course selection changes
   function courseSelect() {
     $courseSelection.change(function() {
+
+      $courseSelf = $(this);
 
       // reset user input fields
       resetFields();
@@ -79,13 +89,45 @@
         return;
       }
 
-      /* This loop runs through all courses in the SWDND, assigning the name and value variables,
+      defineSections();
+      // /* This loop runs through all courses in the SWDND, assigning the name and value variables,
+      //  * creating a new select tag with class="sections", and populates it with new Options based on the
+      //  * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
+      // */
+      // for(var i = 0; i < G.courses.length; i++) {
+
+      //   if($(this).val() == i) {
+      //       courseName = G.courses[i].name;
+      //       courseValue = i;
+      //       courseSections = G.courses[i].sections;
+
+      //     if($('.sections').length === 0) {
+      //       $('.courses').first().after('<select name="sections" class="sections"></select>');
+      //       $sectionSelection = $('.sections');
+      //       sectionSelect();
+      //     }
+
+      //     $sectionSelection.empty();
+      //     $sectionSelection.append(new Option(undefined, undefined));
+
+      //     for(var j = 0; j < courseSections.length; j++) {
+      //       $sectionSelection.append(new Option(courseSections[j].name, j));
+      //     }
+      //   }
+      // }
+    });
+  } // end courseSelect()
+  // courseSelect is wrapped in a function incase it needs to be called again in future versions
+  courseSelect(); // call after function definition, or when document is loaded
+
+  function defineSections(){
+    /* This loop runs through all courses in the SWDND, assigning the name and value variables,
        * creating a new select tag with class="sections", and populates it with new Options based on the
        * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
       */
       for(var i = 0; i < G.courses.length; i++) {
 
-        if($(this).val() == i) {
+        if($courseSelf.val() == i) {
             courseName = G.courses[i].name;
             courseValue = i;
             courseSections = G.courses[i].sections;
@@ -104,14 +146,13 @@
           }
         }
       }
-    });
-  } // end courseSelect()
-  // courseSelect is wrapped in a function incase it needs to be called again in future versions
-  courseSelect(); // call after function definition, or when document is loaded
+  }
 
   // performs UI and variable assignment tasks associated with section selection changes
   function sectionSelect() {
     $sectionSelection.change(function() {
+
+      $sectionSelf = $(this);
 
       // reset user input fields
       resetFields();
@@ -128,12 +169,43 @@
         return;
       }
 
-      /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
+      defineSegments();
+      // /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
+      //  * creates a new select tag with class="segments", and populates it with new Options based on the
+      //  * names of the selected section's segments.  It also calls segmentSelect, if it had never been called.
+      // */
+      // for(var i = 0; i < courseSections.length; i++) {
+      //   if($(this).val() == i) {
+
+      //     sectionName = courseSections[i].name;
+      //     sectionValue = i;
+      //     sectionSegments = courseSections[i].segments;
+
+      //     if($('.segments').length === 0) {
+      //       $('.sections').first().after('<select name="segments" class="segments"></select>');
+      //       $segmentSelection = $('.segments');
+      //       segmentSelect();
+      //     }
+
+      //     $segmentSelection.empty();
+      //     $segmentSelection.append(new Option(undefined, undefined));
+
+      //     for(var j = 0; j < sectionSegments.length; j++) {
+      //       $segmentSelection.append(new Option(sectionSegments[j], j));
+      //     }
+
+      //   }
+      // }
+    });
+  } // end sectionSelect()
+
+  function defineSegments(){
+    /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
        * creates a new select tag with class="segments", and populates it with new Options based on the
        * names of the selected section's segments.  It also calls segmentSelect, if it had never been called.
       */
       for(var i = 0; i < courseSections.length; i++) {
-        if($(this).val() == i) {
+        if($sectionSelf.val() == i) {
 
           sectionName = courseSections[i].name;
           sectionValue = i;
@@ -154,8 +226,7 @@
 
         }
       }
-    });
-  } // end sectionSelect()
+  }
 
   // intantiate session input to be used for localStorage
   var sessionUserInput = {},
@@ -166,9 +237,45 @@
   function segmentSelect() {
     $segmentSelection.change(function() {
 
+      $segmentSelf = $(this);
+
       // reset user input fields
       resetFields();
 
+      definePosition();
+
+      // /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
+      //  * to the selected segment.
+      // */
+      // for(var i = 0; i < sectionSegments.length; i++) {
+      //   if($segmentSelection.val() === "") {
+      //     segmentName = undefined;
+      //     segmentValue = undefined;
+      //     return;
+      //   }
+
+      //   if($(this).val() == i) {
+      //     segmentName = sectionSegments[i];
+      //     segmentValue = i;
+      //   }
+      // }
+
+      // UID = courseName + "*" + sectionName + "*" + segmentName;
+
+      // if(localStorage[UID]) {
+      //   console.log(localStorage[UID]);
+      //   previousInput = JSON.parse(localStorage.getItem(UID));
+
+      //   $submitSelection.prop("disabled", false);
+      //   $nextSegmentSelection.show();
+
+      //   inputPreviousData();
+      // }
+
+    });
+  } // end segmentSelect
+
+    function definePosition() {
       /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
        * to the selected segment.
       */
@@ -179,7 +286,7 @@
           return;
         }
 
-        if($(this).val() == i) {
+        if($segmentSelf.val() == i) {
           segmentName = sectionSegments[i];
           segmentValue = i;
         }
@@ -187,15 +294,22 @@
 
       UID = courseName + "*" + sectionName + "*" + segmentName;
 
-      if(localStorage[UID]) {
+      checkData();
+    }
+
+  //
+  function checkData() {
+    if(localStorage[UID]) {
         console.log(localStorage[UID]);
         previousInput = JSON.parse(localStorage.getItem(UID));
+
         $submitSelection.prop("disabled", false);
+        $nextSegmentSelection.show();
+
         inputPreviousData();
       }
+  }
 
-    });
-  } // end segmentSelect
 
   // instantiate user input found in localStorage for current UID
   var savedDate,
@@ -234,6 +348,7 @@
     $notesSelection.val("");
     $submitSelection.val("submit");
     $submitSelection.prop("disabled", true);
+    $nextSegmentSelection.hide();
   }
 
   // instantiate variables to store user input
@@ -272,6 +387,28 @@
     }
   });
 
+  $nextSegmentSelection.click(function(){
+    if(segmentValue < sectionSegments.length - 1) {
+      $('.segments > option:selected')
+        .prop('selected', false)
+        .next()
+        .prop('selected', true);
+      segmentValue++;
+      return;
+    }
+    if(segmentValue >= sectionSegments.length - 1 && sectionValue < courseSections.length - 1) {
+      $('.sections > option:selected')
+        .prop('selected',false)
+        .next()
+        .prop('selected', true);
+
+        sectionSelect();
+        return;
+    }
+    console.log(segmentValue);
+  });
+
+
   /* This function performs all actions following the submit button being clicked.
    * More notes to be added once the function is finalized.
   */
@@ -305,8 +442,9 @@
     // set localStorage with property UID to a JSON version of the curent sessionUserInput
     localStorage.setItem(UID, JSON.stringify(sessionUserInput[UID]));
 
-    // set submit button value to update
+    // set submit button value to update, and show next_segment button
     $submitSelection.val("update");
+    $nextSegmentSelection.show();
 
     console.log(localStorage[UID]);
 
