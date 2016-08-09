@@ -47,7 +47,8 @@
   }
 
   // variable instantiation for unique course values
-  var courseName,
+  var courses = G.courses,
+      courseName,
       courseValue,
       courseSections,
       sectionName,
@@ -57,14 +58,13 @@
       segmentValue;
 
   // variable instantiation for current selection
-  var $courseSelf,
+  var $courseSelf = $courseSelection,  //<-- this is necessary in the absense of setCourseListener() function wrapping
       $sectionSelf,
       $segmentSelf;
 
-  // performs UI and variable assignment tasks associated with course selection changes
-  function courseSelect() {
+  function setCourseListener(){
+    // performs UI and variable assignment tasks associated with course selection changes
     $courseSelection.change(function() {
-
       $courseSelf = $(this);
 
       // reset user input fields
@@ -86,72 +86,46 @@
         courseName = undefined;
         courseValue = undefined;
         $sectionSelection.remove();
+        $nextSegmentSelection.hide();
         return;
       }
 
       defineSections();
-      // /* This loop runs through all courses in the SWDND, assigning the name and value variables,
-      //  * creating a new select tag with class="sections", and populates it with new Options based on the
-      //  * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
-      // */
-      // for(var i = 0; i < G.courses.length; i++) {
-
-      //   if($(this).val() == i) {
-      //       courseName = G.courses[i].name;
-      //       courseValue = i;
-      //       courseSections = G.courses[i].sections;
-
-      //     if($('.sections').length === 0) {
-      //       $('.courses').first().after('<select name="sections" class="sections"></select>');
-      //       $sectionSelection = $('.sections');
-      //       sectionSelect();
-      //     }
-
-      //     $sectionSelection.empty();
-      //     $sectionSelection.append(new Option(undefined, undefined));
-
-      //     for(var j = 0; j < courseSections.length; j++) {
-      //       $sectionSelection.append(new Option(courseSections[j].name, j));
-      //     }
-      //   }
-      // }
     });
-  } // end courseSelect()
-  // courseSelect is wrapped in a function incase it needs to be called again in future versions
-  courseSelect(); // call after function definition, or when document is loaded
+  }
+  setCourseListener();
 
   function defineSections(){
     /* This loop runs through all courses in the SWDND, assigning the name and value variables,
-       * creating a new select tag with class="sections", and populates it with new Options based on the
-       * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
-      */
-      for(var i = 0; i < G.courses.length; i++) {
+     * creating a new select tag with class="sections", and populates it with new Options based on the
+     * names of the selected course's sections.  It also calls sectionSelect, if it had never been called.
+    */
+    for(var i = 0; i < G.courses.length; i++) {
 
-        if($courseSelf.val() == i) {
-            courseName = G.courses[i].name;
-            courseValue = i;
-            courseSections = G.courses[i].sections;
+      if($courseSelf.val() == i) {
+          courseName = G.courses[i].name;
+          courseValue = i;
+          courseSections = G.courses[i].sections;
 
-          if($('.sections').length === 0) {
-            $('.courses').first().after('<select name="sections" class="sections"></select>');
-            $sectionSelection = $('.sections');
-            sectionSelect();
-          }
+        if($('.sections').length === 0) {
+          $('.courses').first().after('<select name="sections" class="sections"></select>');
+          $sectionSelection = $('.sections');
+          setSectionListener();
+        }
 
-          $sectionSelection.empty();
-          $sectionSelection.append(new Option(undefined, undefined));
+        $sectionSelection.empty();
+        $sectionSelection.append(new Option(undefined, undefined));
 
-          for(var j = 0; j < courseSections.length; j++) {
-            $sectionSelection.append(new Option(courseSections[j].name, j));
-          }
+        for(var j = 0; j < courseSections.length; j++) {
+          $sectionSelection.append(new Option(courseSections[j].name, j));
         }
       }
+    }
   }
 
-  // performs UI and variable assignment tasks associated with section selection changes
-  function sectionSelect() {
+  function setSectionListener(){
+    // performs UI and variable assignment tasks associated with section selection changes -----needs updating
     $sectionSelection.change(function() {
-
       $sectionSelf = $(this);
 
       // reset user input fields
@@ -166,38 +140,13 @@
         sectionName = undefined;
         sectionValue = undefined;
         $segmentSelection.remove();
+        $nextSegmentSelection.hide();
         return;
       }
 
       defineSegments();
-      // /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
-      //  * creates a new select tag with class="segments", and populates it with new Options based on the
-      //  * names of the selected section's segments.  It also calls segmentSelect, if it had never been called.
-      // */
-      // for(var i = 0; i < courseSections.length; i++) {
-      //   if($(this).val() == i) {
-
-      //     sectionName = courseSections[i].name;
-      //     sectionValue = i;
-      //     sectionSegments = courseSections[i].segments;
-
-      //     if($('.segments').length === 0) {
-      //       $('.sections').first().after('<select name="segments" class="segments"></select>');
-      //       $segmentSelection = $('.segments');
-      //       segmentSelect();
-      //     }
-
-      //     $segmentSelection.empty();
-      //     $segmentSelection.append(new Option(undefined, undefined));
-
-      //     for(var j = 0; j < sectionSegments.length; j++) {
-      //       $segmentSelection.append(new Option(sectionSegments[j], j));
-      //     }
-
-      //   }
-      // }
     });
-  } // end sectionSelect()
+  }
 
   function defineSegments(){
     /* This loop runs through all sections in the currently selected course, assigns the name and value variables,
@@ -214,7 +163,7 @@
           if($('.segments').length === 0) {
             $('.sections').first().after('<select name="segments" class="segments"></select>');
             $segmentSelection = $('.segments');
-            segmentSelect();
+            setSegmentListener();
           }
 
           $segmentSelection.empty();
@@ -223,9 +172,9 @@
           for(var j = 0; j < sectionSegments.length; j++) {
             $segmentSelection.append(new Option(sectionSegments[j], j));
           }
-
         }
       }
+    definePosition();
   }
 
   // intantiate session input to be used for localStorage
@@ -233,71 +182,43 @@
       previousInput,
       UID;
 
-  // performs UI and variable assignment tasks associated with segment selection changes
-  function segmentSelect() {
+  function setSegmentListener(){
+    // performs UI and variable assignment tasks associated with segment selection changes
     $segmentSelection.change(function() {
-
       $segmentSelf = $(this);
 
       // reset user input fields
-      resetFields();
-
       definePosition();
-
-      // /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
-      //  * to the selected segment.
-      // */
-      // for(var i = 0; i < sectionSegments.length; i++) {
-      //   if($segmentSelection.val() === "") {
-      //     segmentName = undefined;
-      //     segmentValue = undefined;
-      //     return;
-      //   }
-
-      //   if($(this).val() == i) {
-      //     segmentName = sectionSegments[i];
-      //     segmentValue = i;
-      //   }
-      // }
-
-      // UID = courseName + "*" + sectionName + "*" + segmentName;
-
-      // if(localStorage[UID]) {
-      //   console.log(localStorage[UID]);
-      //   previousInput = JSON.parse(localStorage.getItem(UID));
-
-      //   $submitSelection.prop("disabled", false);
-      //   $nextSegmentSelection.show();
-
-      //   inputPreviousData();
-      // }
-
     });
-  } // end segmentSelect
+  }
 
-    function definePosition() {
-      /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
-       * to the selected segment.
-      */
-      for(var i = 0; i < sectionSegments.length; i++) {
-        if($segmentSelection.val() === "") {
-          segmentName = undefined;
-          segmentValue = undefined;
-          return;
-        }
+  function definePosition() {
+    resetFields();
 
-        if($segmentSelf.val() == i) {
-          segmentName = sectionSegments[i];
-          segmentValue = i;
-        }
+    /* This loop resets segment values if no segment is selected, and otherwise assigns the segment values
+     * to the selected segment.
+    */
+    for(var i = 0; i < sectionSegments.length; i++) {
+
+      if($segmentSelection.val() === "") {
+        segmentName = undefined;
+        segmentValue = undefined;
+        $nextSegmentSelection.hide();
+        return;
       }
 
-      UID = courseName + "*" + sectionName + "*" + segmentName;
-
-      checkData();
+      if($segmentSelf.val() == i) {
+        segmentName = sectionSegments[i];
+        segmentValue = i;
+      }
     }
 
-  //
+    UID = courseName + "*" + sectionName + "*" + segmentName;
+    checkData();
+    $nextSegmentSelection.show();
+  }
+
+  // ---- needs comment
   function checkData() {
     if(localStorage[UID]) {
         console.log(localStorage[UID]);
@@ -309,7 +230,6 @@
         inputPreviousData();
       }
   }
-
 
   // instantiate user input found in localStorage for current UID
   var savedDate,
@@ -337,6 +257,8 @@
     $questionsSelection.val(savedQuestions);
     $notesSelection.val(savedNotes);
     $submitSelection.val("update");
+    $submitSelection.css('background-color', '#A6ED8E');
+    $nextSegmentSelection.css('background-color', 'white');
   } // end inputPreviousData
 
   // simple form value reset function
@@ -347,8 +269,9 @@
     $questionsSelection.val("");
     $notesSelection.val("");
     $submitSelection.val("submit");
+    $submitSelection.css('background-color', '#8ED5ED');
+    $nextSegmentSelection.css('background-color', '#EDA68E');
     $submitSelection.prop("disabled", true);
-    $nextSegmentSelection.hide();
   }
 
   // instantiate variables to store user input
@@ -374,47 +297,61 @@
   $ratingSelection.change(function(){
     if($ratingSelection.val() > 0) {
       rating = $ratingSelection.val();
-      console.log(typeof rating);
-      console.log(rating);
       if(segmentName){
         $submitSelection.prop("disabled", false);
-        console.log(segmentName);
       }
     } else {
-      console.log("rating: undefined");
       rating = undefined;
       $submitSelection.prop("disabled", true);
     }
   });
 
+  // when user clicks "next segment" button, call function to move to next segment
   $nextSegmentSelection.click(function(){
     if(segmentValue < sectionSegments.length - 1) {
-      $('.segments > option:selected')
-        .prop('selected', false)
-        .next()
-        .prop('selected', true);
-      segmentValue++;
-      return;
+      selectNextSegment();
+    } else if ((segmentValue >= sectionSegments.length - 1 && sectionValue < courseSections.length - 1) || !segmentValue) {
+      selectNextSection();
+    } else if (sectionValue >= courseSections.length - 1 && courseValue < courses.length - 1) {
+      selectNextCourse();
+    } else {
+      $nextSegmentSelection.hide();
     }
-    if(segmentValue >= sectionSegments.length - 1 && sectionValue < courseSections.length - 1) {
-      $('.sections > option:selected')
-        .prop('selected',false)
-        .next()
-        .prop('selected', true);
-
-        sectionSelect();
-        return;
-    }
-    console.log(segmentValue);
   });
 
+  function selectNextSegment() {
+    $('.segments > option:selected')
+      .prop('selected', false)
+      .next()
+      .prop('selected', true);
+
+    definePosition();
+  }
+
+  function selectNextSection() {
+    $('.sections > option:selected')
+      .prop('selected',false)
+      .next()
+      .prop('selected', true);
+
+    defineSegments();
+    selectNextSegment();
+  }
+
+  function selectNextCourse() {
+    $('.courses > option:selected')
+      .prop('selected',false)
+      .next()
+      .prop('selected', true);
+
+    defineSections();
+    selectNextSection();
+  }
 
   /* This function performs all actions following the submit button being clicked.
    * More notes to be added once the function is finalized.
   */
   $submitSelection.click(function(){
-
-    console.log("rating: " + rating);
 
     // if the user provides praise, critiques, and/or questions, set their values
     if ($likeSelection.val().length === 0)
@@ -444,9 +381,11 @@
 
     // set submit button value to update, and show next_segment button
     $submitSelection.val("update");
+    $submitSelection.css('background-color', '#A6ED8E');
+    $nextSegmentSelection.css('background-color', 'white');
     $nextSegmentSelection.show();
 
-    console.log(localStorage[UID]);
+    // console.log(localStorage[UID]);
 
   });
 
