@@ -26,6 +26,12 @@
     select {
       display: block;
     }
+    .next_segment {
+      display: none;
+    }
+    .button {
+      display: inline-block;
+    }
   </style>
   <link rel="stylesheet" href="jquery-ui.min.css">
 </head>
@@ -60,7 +66,10 @@
       <br>
       <textarea name="questions" placeholder="Need help?  Post your question here!" rows="5" cols="50" resize="none" class="questions"></textarea>
       <textarea name="notes" placeholder="Takes notes here that you can review later!" rows="5" cols="50" resize="none" class="notes"></textarea>
-      <input type="button" name="submit" value="submit" class="submit">
+      <div class="button_div">
+        <input type="button" name="submit" value="submit" class="submit button">
+        <input type="button" name="next" value="next segment" class="next_segment button">
+      </div>
     </form>
   </div>
 
